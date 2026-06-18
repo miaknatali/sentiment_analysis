@@ -14,13 +14,14 @@ HEADERS = {
 }
 
 DATASET = {
-    "platform_name": "instagram",
-    "dataset_id": "gd_lk5ns7kz21pck8jpis",
-    "records_limit": 21700,
-    "field": "description",
+    "platform_name": "reddit",
+    "dataset_id": "gd_lvz8ah06191smkebj4",
+    "records_limit": 40,
+    "field": "title",
 }
 
-
+'''
+Filter for getting all posts that mention data centers across social media platforms
 def build_filter(field: str) -> dict:
     return {
         "operator": "or",
@@ -37,7 +38,32 @@ def build_filter(field: str) -> dict:
             # {"name": field, "value": "hyperscaler", "operator": "includes"},
         ],
     }
+'''
 
+def build_filter(field: str = "description") -> dict:
+    return {
+        "operator": "and",
+        "filters": [
+            {
+                "operator": "or",
+                "filters": [
+                    {"name": "community_name", "value": "illinois", "operator": "="},
+                    {"name": "community_name", "value": "NewYork", "operator": "="},
+                    {"name": "community_name", "value": "newyorkcity", "operator": "="},
+                    #{"name": "community_name", "value": "chicago", "operator": "="},
+                ],
+            },
+            {
+                "operator": "or",
+                "filters": [
+                    {"name": field, "value": "data center", "operator": "includes"},
+                    {"name": field, "value": "datacenter", "operator": "includes"},
+                    {"name": field, "value": "datacentre", "operator": "includes"},
+                    {"name": field, "value": "data centre", "operator": "includes"},
+                ],
+            },
+        ],
+    }
 
 def create_snapshot(dataset_id: str, records_limit: int, field: str) -> str:
     url = "https://api.brightdata.com/datasets/filter"
