@@ -16,12 +16,11 @@ HEADERS = {
 DATASET = {
     "platform_name": "reddit",
     "dataset_id": "gd_lvz8ah06191smkebj4",
-    "records_limit": 40,
-    "field": "title",
+    "records_limit": 50000,
+    "field": "description",
 }
 
-'''
-Filter for getting all posts that mention data centers across social media platforms
+#Filter for getting all posts that mention data centers across social media platforms
 def build_filter(field: str) -> dict:
     return {
         "operator": "or",
@@ -30,16 +29,10 @@ def build_filter(field: str) -> dict:
             {"name": field, "value": "datacenter", "operator": "includes"},
             {"name": field, "value": "data centre", "operator": "includes"},
             {"name": field, "value": "datacentre", "operator": "includes"},
-            # Max 4 rules
-            # {"name": field, "value": "server farm", "operator": "includes"},
-            # {"name": field, "value": "colocation facility", "operator": "includes"},
-            # {"name": field, "value": "colo facility", "operator": "includes"},
-            # {"name": field, "value": "hyperscale data center", "operator": "includes"},
-            # {"name": field, "value": "hyperscaler", "operator": "includes"},
         ],
     }
-'''
 
+'''
 def build_filter(field: str = "description") -> dict:
     return {
         "operator": "and",
@@ -64,6 +57,7 @@ def build_filter(field: str = "description") -> dict:
             },
         ],
     }
+'''
 
 def create_snapshot(dataset_id: str, records_limit: int, field: str) -> str:
     url = "https://api.brightdata.com/datasets/filter"
